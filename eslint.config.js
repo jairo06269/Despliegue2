@@ -1,19 +1,16 @@
-// eslint.config.js
-import js from "@eslint/js";
-import globals from "globals";
-
-export default [
-  js.config({
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
+// eslint.config.js (compatible con ESLint 9 y CommonJS)
+module.exports = [
+    {
+      files: ['**/*.js'],
+      languageOptions: {
+        ecmaVersion: 2021,
+        sourceType: 'module',
+      },
+      rules: {
+        semi: ['error', 'always'],
+        quotes: ['error', 'single'],
+        indent: ['error', 2],
       },
     },
-    rules: {
-      semi: ["error", "always"],
-      quotes: ["error", "single"],
-      indent: ["error", 2],
-    },
-  }),
-];
+  ];
+  
