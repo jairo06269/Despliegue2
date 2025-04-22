@@ -4,7 +4,7 @@ body {
 }
 
 body::before {
-  content: " ";
+  content: ' ';
   position: fixed;
   top: 0;
   left: 0;
@@ -86,7 +86,7 @@ label {
   vertical-align: middle;
 }
 
-input[type="submit"] {
+input[type='submit'] {
   display: block;
   width: 25vw;
   margin: auto;
