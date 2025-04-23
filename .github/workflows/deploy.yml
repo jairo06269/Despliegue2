@@ -21,11 +21,5 @@ jobs:
           ssh-keyscan -H 40.76.139.12 >> ~/.ssh/known_hosts
 
       - name: Pull and restart Apache
-    run: |
-    ssh jairo@40.76.139.12 << 'EOF'
-      cd /var/www/html/app2
-      git config --global --add safe.directory /var/www/html/app2
-      git pull origin main
-      sudo systemctl restart apache2
-    EOF
-
+        run: |
+          ssh jairo@40.
