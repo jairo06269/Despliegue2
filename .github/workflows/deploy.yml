@@ -10,18 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up SSH
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.AZURE_SSH_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.AZURE_HOST }} >> ~/.ssh/known_hosts
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AZURE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 40.76.139.12 >> ~/.ssh/known_hosts
 
-    - name: Pull latest code and restart Apache
-      run: |
-        ssh ${{ secrets.AZURE_HOST }} << 'EOF'
-          cd /var/www/html/miapp
-          git pull origin main
+      - name: Pull and restart Apache
+        run: |
+          ssh jairo@40.76.139.12 << 'EOF'
+            cd /var/www/html/app2
+            git pull origin main
+            sudo systemctl restart apache2
+          EOF
