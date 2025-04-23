@@ -16,13 +16,15 @@ jobs:
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.AZURE_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
           ssh-keyscan -H 40.76.139.12 >> ~/.ssh/known_hosts
 
       - name: Pull and restart Apache
         run: |
-          ssh jairo@40.76.139.12 << 'EOF'
+          ssh -o StrictHostKeyChecking=no jairo@40.76.139.12 << 'EOF'
             cd /var/www/html/app2
             git remote set-url origin git@github.com:jairo06269/Despliegue2.git
             git config --global --add safe.directory /var/www/html/app2
