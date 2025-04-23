@@ -1,2 +1,30 @@
+# Node
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs
+*.log
+*.out
+
+# Sistema
 .DS_Store
+Thumbs.db
+
+# Entornos
+.env
+.env.local
+.env.*.local
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# VSCode
+.vscode/
+
+# Build (si usás herramientas que generan carpetas como /dist o /build)
+dist/
+build/
