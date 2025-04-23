@@ -1,0 +1,9 @@
+{
+    "routes": [
+      {
+        "route": "/api/*",
+        "rewrite": "http://40.76.139.12/api/{*}"
+      }
+    ]
+  }
+  
