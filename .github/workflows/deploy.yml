@@ -1,35 +1,11 @@
-name: Deploy to Azure
-#sdfgg
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.VM_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-          ssh-keyscan -p ${{ secrets.VM_PORT }} -H ${{ secrets.VM_IP }} >> ~/.ssh/known_hosts
-
-      - name: Pull and restart Apache
-        run: |
-          ssh -t -o StrictHostKeyChecking=no -p ${{ secrets.VM_PORT }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} <<EOF
-            cd /var/www/html/app2
-            git reset --hard HEAD
-            git clean -fd
-            git remote set-url origin git@github.com:jairo06269/Despliegue2.git
-            git config --global --add safe.directory /var/www/html/app2
-            git pull origin main
-            sudo systemctl restart apache2
-          EOF
+- name: Pull and restart Apache
+  run: |
+    ssh -o StrictHostKeyChecking=no -p ${{ secrets.VM_PORT }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} <<EOF
+      cd /var/www/html/app2
+      git reset --hard HEAD
+      git clean -fd
+      git remote set-url origin git@github.com:jairo06269/Despliegue2.git
+      git config --global --add safe.directory /var/www/html/app2
+      git pull origin main
+      sudo systemctl restart apache2
+    EOF
