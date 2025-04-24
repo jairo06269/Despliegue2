@@ -22,17 +22,14 @@ jobs:
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
           ssh-keyscan -p ${{ secrets.VM_PORT }} -H ${{ secrets.VM_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy app and restart Apache
+      - name: Deploy and restart Apache
         run: |
-          echo '
-          cd /var/www/html/app2
-          git reset --hard HEAD
-          git clean -fd
-          git remote set-url origin git@github.com:jairo06269/Despliegue2.git
-          git config --global --add safe.directory /var/www/html/app2
-          git pull origin main
-          sudo systemctl restart apache2
-          ' > deploy-script.sh
-
-          scp -P ${{ secrets.VM_PORT }} deploy-script.sh ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:/tmp/
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VM_PORT }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} "bash /tmp/deploy-script.sh && rm /tmp/deploy-script.sh"
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VM_PORT }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} "
+            cd /var/www/html/app2 && \
+            git reset --hard HEAD && \
+            git clean -fd && \
+            git remote set-url origin git@github.com:jairo06269/Despliegue2.git && \
+            git config --global --add safe.directory /var/www/html/app2 && \
+            git pull origin main && \
+            sudo systemctl restart apache2
+          "
