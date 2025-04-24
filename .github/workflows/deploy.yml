@@ -24,10 +24,10 @@ jobs:
 
       - name: Pull and restart Apache
         run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VM_PORT }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
+          ssh -t -o StrictHostKeyChecking=no -p ${{ secrets.VM_PORT }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
             cd /var/www/html/app2
             git remote set-url origin git@github.com:jairo06269/Despliegue2.git
             git config --global --add safe.directory /var/www/html/app2
             git pull origin main
-            sudo systemctl restart apache2
+            sudo -S systemctl restart apache2
           EOF
