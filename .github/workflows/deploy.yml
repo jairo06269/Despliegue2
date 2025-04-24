@@ -17,14 +17,14 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.VM_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-          ssh-keyscan -H 40.76.139.12 >> ~/.ssh/known_hosts
+          ssh-keyscan -p ${{ secrets.VM_PORT }} -H ${{ secrets.VM_IP }} >> ~/.ssh/known_hosts
 
       - name: Pull and restart Apache
         run: |
-          ssh -o StrictHostKeyChecking=no jairo@40.76.139.12 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VM_PORT }} ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
             cd /var/www/html/app2
             git remote set-url origin git@github.com:jairo06269/Despliegue2.git
             git config --global --add safe.directory /var/www/html/app2
